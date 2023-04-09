@@ -17,5 +17,4 @@ RUN npm install -g chromedriver selenium-side-runner --unsafe-perm=true --allow-
 # docker run -d -it -p 4444:4444  -p 7900:7900 --ip 172.19.19.19 --net selenium seleniarm/standalone-chromium:latest
 # run this container via $ docker run -it --rm --net selenium -v $(pwd):/tests test
 # selenium-side-runner --server http://selenium:4444/wd/hub -c "goog:chromeOptions.args=[--headless,--nogpu] browserName=chrome" tests/test.side
-ENV SELENIUM_IP=172.17.0.2
-CMD ["selenium-side-runner", "--server", "http://${SELENIUM_IP}:4444/wd/hub", "-c", "goog:chromeOptions.args=[--headless,--nogpu] browserName=chrome", "/tests/test.side"]
+CMD ["selenium-side-runner", "--server", "http://172.17.0.2:4444/wd/hub", "-c", "goog:chromeOptions.args=[--headless,--nogpu] browserName=chrome", "/tests/test.side"]
