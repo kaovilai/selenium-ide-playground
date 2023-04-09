@@ -1,0 +1,33 @@
+name: Selenium IDE issue 1610
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+jobs:
+  selenium-ide-1610:
+    env:
+      SELENIUM_IP: 172.17.0.2
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: create docker network
+      run: |
+        docker network create selenium
+    - name: Start Selenium Chrome
+      run: |
+        docker run --net selenium -d --ip ${{ env.SELENIUM_IP }} -p 4444:4444 -p 7900:7900 --shm-size="2g" --name selenium selenium/standalone-chrome:4.8.3-20230404 &
+    - name: wait until selenium is ready
+      run: |
+        # wait for selenium to be ready by checking the status endpoint in docker selenium network
+        until docker run --net selenium --rm alpine wget -q --timeout=1 --spider http://${{ env.SELENIUM_IP }}:4444/wd/hub/status;
+        do
+            printf '.';
+        done
+    - name: Run tests
+      run: |
+        docker run --net selenium -e SELENIUM_IP=${{ env.SELENIUM_IP }} -v $(pwd)/bug/select/html\ select.side:/tests/test.side ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}/selenium-side-runner:latest

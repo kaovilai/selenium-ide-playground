@@ -1,0 +1,106 @@
+{
+  "id": "98b7eac6-21de-4210-9b4f-35143cf96e36",
+  "version": "2.0",
+  "name": "html select",
+  "url": "https://github.tig.pw/selenium-ide-playground/bug/select/",
+  "tests": [
+    {
+      "id": "0a4cac6f-6585-4a3d-9da9-7847120e9768",
+      "name": "select opel",
+      "commands": [
+        {
+          "id": "b3815241-7fd9-4718-843f-3974b60b7e37",
+          "command": "open",
+          "target": "/selenium-ide-playground/bug/select/index.html",
+          "value": ""
+        },
+        {
+          "command": "storeWindowHandle",
+          "id": "0000-0000-0000-0000",
+          "target": "root",
+          "value": ""
+        },
+        {
+          "command": "click",
+          "target": "id=cars",
+          "value": "",
+          "insertBeforeLastCommand": false,
+          "frameLocation": "root",
+          "winHandleId": "root",
+          "id": "17fb758c-1bd8-4217-874d-a55c6b14def0",
+          "targets": [
+            [
+              "id=cars",
+              "id"
+            ],
+            [
+              "name=cars",
+              "name"
+            ],
+            [
+              "css=#cars",
+              "css:finder"
+            ],
+            [
+              "xpath=(//select[@id='cars'])[1]",
+              "xpath:attributes"
+            ],
+            [
+              "xpath=//select[contains(.,'Volvo\nSaab\nOpel\nAudi')]",
+              "xpath:innerText"
+            ]
+          ],
+          "opensWindow": true,
+          "windowHandleName": "win6527"
+        },
+        {
+          "command": "select",
+          "target": "id=cars",
+          "value": "label=Opel",
+          "insertBeforeLastCommand": false,
+          "frameLocation": "root",
+          "winHandleId": "root",
+          "id": "8d544902-d8c7-449d-9c2e-c37cbcac1ea9",
+          "targets": [
+            [
+              "id=cars",
+              "id"
+            ],
+            [
+              "name=cars",
+              "name"
+            ],
+            [
+              "css=#cars",
+              "css:finder"
+            ],
+            [
+              "xpath=(//select[@id='cars'])[1]",
+              "xpath:attributes"
+            ],
+            [
+              "xpath=//select[contains(.,'Volvo\nSaab\nOpel\nAudi')]",
+              "xpath:innerText"
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "suites": [
+    {
+      "id": "1d4463e5-c2b5-45dd-b3f5-43b8531e2ed6",
+      "name": "Default Suite",
+      "persistSession": false,
+      "parallel": false,
+      "timeout": 300,
+      "tests": [
+        "0a4cac6f-6585-4a3d-9da9-7847120e9768"
+      ]
+    }
+  ],
+  "urls": [
+    "https://www.w3schools.com/"
+  ],
+  "plugins": []
+}
