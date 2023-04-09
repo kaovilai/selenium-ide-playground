@@ -35,5 +35,18 @@ jobs:
         export SELENIUM_IP=$(docker network  inspect -f '{{range .Containers}}{{.IPv4Address}}{{end}}'  selenium | awk -F/ '{print $1}')
         echo "SELENIUM_IP=$(docker network  inspect -f '{{range .Containers}}{{.IPv4Address}}{{end}}'  selenium | awk -F/ '{print $1}')" >> $GITHUB_ENV
     - name: Run tests
+      id: test
+      continue-on-error: true
       run: |
-        docker run --net selenium -v $(pwd)/bug/select/html\ select.side:/tests/test.side ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}/selenium-side-runner:latest selenium-side-runner --server http://${{ env.SELENIUM_IP }}:4444/wd/hub -c "goog:chromeOptions.args=[--headless,--nogpu] browserName=chrome" tests/test.side
+        docker run --net selenium --rm -v $(pwd)/bug/select/html\ select.side:/tests/test.side ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}/selenium-side-runner:latest selenium-side-runner --server http://${{ env.SELENIUM_IP }}:4444/wd/hub -c "goog:chromeOptions.args=[--headless,--nogpu] browserName=chrome" tests/test.side
+    - name: Stop Selenium Chrome
+      run: |
+        # logs
+        docker logs selenium
+        docker stop selenium
+        docker rm selenium
+        docker network rm selenium
+    - name: fail if tests failed
+      if: ${{ steps.test.outcome == 'failure' }}
+      run: |
+        exit 1
