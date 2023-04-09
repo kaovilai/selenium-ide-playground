@@ -20,11 +20,16 @@ jobs:
         docker network create selenium
     - name: Start Selenium Chrome
       run: |
-        docker run --net selenium -d --ip ${{ env.SELENIUM_IP }} -p 4444:4444 -p 7900:7900 --shm-size="2g" --name selenium selenium/standalone-chrome:4.8.3-20230404 &
+        docker run --net selenium -d -p 4444:4444 -p 7900:7900 --shm-size="2g" --name selenium selenium/standalone-chrome:4.8.3-20230404 &
+    - name: get ip of selenium container
+      run: |
+        # get the ip of the selenium container
+        export SELENIUM_IP=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' selenium)
+        echo "SELENIUM_IP=$SELENIUM_IP" >> $GITHUB_ENV
     - name: wait until selenium is ready
       run: |
         # wait for selenium to be ready by checking the status endpoint in docker selenium network
-        until docker run --net selenium --rm alpine wget -q --timeout=1 --spider http://${{ env.SELENIUM_IP }}:4444/wd/hub/status;
+        until docker run --net selenium --rm alpine wget -q --timeout=1 --spider http://selenium:4444/wd/hub/status;
         do
             printf '.';
         done
