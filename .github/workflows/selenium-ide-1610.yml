@@ -21,11 +21,6 @@ jobs:
     - name: Start Selenium Chrome
       run: |
         docker run --net selenium -d -p 4444:4444 -p 7900:7900 --shm-size="2g" --name selenium selenium/standalone-chrome:4.8.3-20230404 &
-    - name: get ip of selenium container
-      run: |
-        # get the ip of the selenium container
-        export SELENIUM_IP=$(docker network  inspect -f '{{range .Containers}}{{.IPv4Address}}{{end}}'  selenium | awk -F/ '{print $1}')
-        echo "SELENIUM_IP=$SELENIUM_IP" >> $GITHUB_ENV
     - name: wait until selenium is ready
       run: |
         # wait for selenium to be ready by checking the status endpoint in docker selenium network
@@ -33,6 +28,12 @@ jobs:
         do
             printf '.';
         done
+    - name: get ip of selenium container
+      run: |
+        # get the ip of the selenium container
+        docker network  inspect -f '{{range .Containers}}{{.IPv4Address}}{{end}}'  selenium | awk -F/ '{print $1}'
+        export SELENIUM_IP=$(docker network  inspect -f '{{range .Containers}}{{.IPv4Address}}{{end}}'  selenium | awk -F/ '{print $1}')
+        echo "SELENIUM_IP=$(docker network  inspect -f '{{range .Containers}}{{.IPv4Address}}{{end}}'  selenium | awk -F/ '{print $1}')" >> $GITHUB_ENV
     - name: Run tests
       run: |
-        docker run --net selenium -v $(pwd)/bug/select/html\ select.side:/tests/test.side ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}/selenium-side-runner:latest selenium-side-runner --server http://selenium:4444/wd/hub -c "goog:chromeOptions.args=[--headless,--nogpu] browserName=chrome" tests/test.side
+        docker run --net selenium -v $(pwd)/bug/select/html\ select.side:/tests/test.side ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}/selenium-side-runner:latest selenium-side-runner --server http://${{ env.SELENIUM_IP }}:4444/wd/hub -c "goog:chromeOptions.args=[--headless,--nogpu] browserName=chrome" tests/test.side
