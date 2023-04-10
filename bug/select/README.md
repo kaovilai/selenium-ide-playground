@@ -17,3 +17,12 @@ log
 ```
 
 These were recorded on from the same selenium-ide install.
+
+
+Experiments with docker notes
+```
+docker run -d -p 4444:4444 -p 7900:7900 --shm-size="2g" --net selenium --name selenium seleniarm/standalone-chromium:latest
+```
+```
+docker run --net selenium -v $(pwd)/bug/select/html\ select.side:/tests/test.side ghcr.io/kaovilai/selenium-ide-playground/selenium-side-runner selenium-side-runner --server http://$(docker network  inspect -f '{{range .Containers}}{{.IPv4Address}}{{end}}'  selenium | awk -F/ '{print $1}'):4444/wd/hub -c "goog:chromeOptions.args=[--headless,--nogpu] browserName=chrome" tests/test.side
+```
