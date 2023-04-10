@@ -1,4 +1,5 @@
 Does not work as of https://github.com/SeleniumHQ/selenium-ide/releases/download/4.0.0-alpha.37/Selenium.IDE-4.0.0-alpha.37-arm64.dmg
+
 Issue filed at https://github.com/SeleniumHQ/selenium-ide/issues/1610 [![Selenium IDE issue 1610](https://github.com/kaovilai/selenium-ide-playground/actions/workflows/selenium-ide-1610.yml/badge.svg)](https://github.com/kaovilai/selenium-ide-playground/actions/workflows/selenium-ide-1610.yml)
 
 log
